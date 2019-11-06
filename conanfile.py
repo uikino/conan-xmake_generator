@@ -28,13 +28,13 @@ class xmake(Generator):
         deps = XmakeDepsFormatter(self.deps_build_info)
 
         # get plat
-        plat = str(self.settings.get_safe("os_build"))
+        plat = str(self.settings.get_safe("os"))
 
         # get mode
         mode = str(self.settings.get_safe("build_type"))
 
         # get arch
-        arch = str(self.settings.get_safe("arch_build"))
+        arch = str(self.settings.get_safe("arch"))
         
         # make template
         template = ('  {plat}_{arch}_{mode} = \n'
