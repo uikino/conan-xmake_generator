@@ -42,6 +42,7 @@ class xmake(Generator):
                     '    includedirs = {{{deps.include_paths}}},\n'
                     '    linkdirs    = {{{deps.lib_paths}}},\n'
                     '    links       = {{{deps.libs}}},\n'
+                    '    syslinks    = {{{deps.system_libs}}},\n'
                     '    defines     = {{{deps.defines}}},\n'
                     '    cxxflags    = {{{deps.cppflags}}},\n'
                     '    cflags      = {{{deps.cflags}}},\n'
@@ -63,6 +64,7 @@ class XmakeDepsFormatter(object):
         self.lib_paths       = ",\n".join('"%s"' % p.replace("\\", "/") for p in deps_cpp_info.lib_paths)
         self.bin_paths       = ",\n".join('"%s"' % p.replace("\\", "/") for p in deps_cpp_info.bin_paths)
         self.libs            = ", ".join('"%s"' % p for p in deps_cpp_info.libs)
+        self.system_libs     = ", ".join('"%s"' % p for p in deps_cpp_info.system_libs)
         self.defines         = ", ".join('"%s"' % p for p in deps_cpp_info.defines)
         self.cppflags        = ", ".join('"%s"' % p for p in deps_cpp_info.cppflags)
         self.cflags          = ", ".join('"%s"' % p for p in deps_cpp_info.cflags)
