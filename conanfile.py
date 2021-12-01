@@ -57,17 +57,26 @@ class xmake(Generator):
         # make content
         return "{\n" + ",\n".join(sections) + "\n}"
 
+def prepare_process_escape_character(raw_string):
+    if raw_string.find('\"') != -1:
+        raw_string = raw_string.replace("\"","\\\"")
+    return raw_string
+
 class XmakeDepsFormatter(object):
 
+    def __filter_char(self, raw_string):
+        return prepare_process_escape_character(raw_string)
+
     def __init__(self, deps_cpp_info):
-        self.include_paths   = ",\n".join('"%s"' % p.replace("\\", "/") for p in deps_cpp_info.include_paths)
-        self.lib_paths       = ",\n".join('"%s"' % p.replace("\\", "/") for p in deps_cpp_info.lib_paths)
-        self.bin_paths       = ",\n".join('"%s"' % p.replace("\\", "/") for p in deps_cpp_info.bin_paths)
-        self.libs            = ", ".join('"%s"' % p for p in deps_cpp_info.libs)
-        self.system_libs     = ", ".join('"%s"' % p for p in deps_cpp_info.system_libs)
-        self.defines         = ", ".join('"%s"' % p for p in deps_cpp_info.defines)
-        self.cppflags        = ", ".join('"%s"' % p for p in deps_cpp_info.cppflags)
-        self.cflags          = ", ".join('"%s"' % p for p in deps_cpp_info.cflags)
-        self.sharedlinkflags = ", ".join('"%s"' % p for p in deps_cpp_info.sharedlinkflags)
-        self.exelinkflags    = ", ".join('"%s"' % p for p in deps_cpp_info.exelinkflags)
-        self.rootpath        = "%s" % deps_cpp_info.rootpath.replace("\\", "/")
+        self.include_paths   = ",\n".join('"%s"' % self.__filter_char(p.replace("\\", "/")) for p in deps_cpp_info.include_paths)
+        self.lib_paths       = ",\n".join('"%s"' % self.__filter_char(p.replace("\\", "/")) for p in deps_cpp_info.lib_paths)
+        self.bin_paths       = ",\n".join('"%s"' % self.__filter_char(p.replace("\\", "/")) for p in deps_cpp_info.bin_paths)
+        self.libs            = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.libs)
+        self.system_libs     = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.system_libs)
+        self.defines         = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.defines)
+        self.cppflags        = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.cppflags)
+        self.cflags          = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.cflags)
+        self.sharedlinkflags = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.sharedlinkflags)
+        self.exelinkflags    = ", ".join('"%s"' % self.__filter_char(p) for p in deps_cpp_info.exelinkflags)
+        self.rootpath        = "%s" % self.__filter_char(deps_cpp_info.rootpath.replace("\\", "/"))
+
