@@ -57,15 +57,16 @@ class xmake(Generator):
         # make content
         return "{\n" + ",\n".join(sections) + "\n}"
 
-def prepare_process_escape_character(raw_string):
-    if raw_string.find('\"') != -1:
-        raw_string = raw_string.replace("\"","\\\"")
-    return raw_string
+
 
 class XmakeDepsFormatter(object):
-
+    def __prepare_process_escape_character(self, raw_string):
+        if raw_string.find('\"') != -1:
+            raw_string = raw_string.replace("\"","\\\"")
+        return raw_string
+    
     def __filter_char(self, raw_string):
-        return prepare_process_escape_character(raw_string)
+        return self.__prepare_process_escape_character(raw_string)
 
     def __init__(self, deps_cpp_info):
         self.include_paths   = ",\n".join('"%s"' % self.__filter_char(p.replace("\\", "/")) for p in deps_cpp_info.include_paths)
